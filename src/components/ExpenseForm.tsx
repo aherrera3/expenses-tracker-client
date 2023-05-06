@@ -3,10 +3,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import categories from "../utils/categories";
 import {
+  Box,
   Button,
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputLeftElement,
   Select,
   Text,
 } from "@chakra-ui/react";
@@ -47,30 +50,39 @@ const ExpenseForm = ({ onSubmit }: Props) => {
     >
       <FormControl mb={3}>
         <FormLabel htmlFor="description">Description</FormLabel>
-        <Input {...register("description")} id="description" type="text" />
+        <Input
+          placeholder="Food for the cats"
+          {...register("description")}
+          id="description"
+          type="text"
+        />
         {errors.description && (
-          <Text color="tomato">{errors.description.message}</Text>
+          <Text color="red.300">{errors.description.message}</Text>
         )}
       </FormControl>
 
       <FormControl mb={3}>
         <FormLabel htmlFor="amount">Amount</FormLabel>
-        <Input
-          {...register("amount", { valueAsNumber: true })}
-          id="amount"
-          type="number"
-        />
-        {errors.amount && <Text color="tomato">{errors.amount.message}</Text>}
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents="none"
+            color="gray.300"
+            fontSize="1.2em"
+            children="$"
+          />
+          <Input
+            placeholder="120000"
+            {...register("amount", { valueAsNumber: true })}
+            id="amount"
+            type="number"
+          />
+        </InputGroup>
+        {errors.amount && <Text color="red.300">{errors.amount.message}</Text>}
       </FormControl>
 
       <FormControl mb={5}>
         <FormLabel htmlFor="category">Category</FormLabel>
-        <Select
-          placeholder=""
-          {...register("category")}
-          id="category"
-          name="category"
-        >
+        <Select {...register("category")} id="category" name="category">
           <option value=""></option>
           {categories.map((category) => (
             <option key={category} value={category}>
@@ -79,7 +91,7 @@ const ExpenseForm = ({ onSubmit }: Props) => {
           ))}
         </Select>
         {errors.category && (
-          <Text color="tomato">{errors.category.message}</Text>
+          <Text color="red.300">{errors.category.message}</Text>
         )}
       </FormControl>
 

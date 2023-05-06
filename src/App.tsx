@@ -2,14 +2,14 @@ import { useState } from "react";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseFilter from "./components/ExpenseFilter";
-import { Box } from "@chakra-ui/react";
+import { Box, Heading, VStack } from "@chakra-ui/react";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [expenses, setExpenses] = useState([
     { id: 1, description: "aaa", amount: 10, category: "Utilities" },
-    { id: 2, description: "bbb", amount: 10, category: "Utilities" },
-    { id: 3, description: "ccc", amount: 10, category: "Utilities" },
+    { id: 2, description: "bbb", amount: 8, category: "Groceries" },
+    { id: 3, description: "ccc", amount: 5, category: "Utilities" },
   ]);
 
   const handlerDelete = (id: number) => {
@@ -23,9 +23,13 @@ function App() {
     : expenses;
 
   return (
+    //stretch
     <>
-      {/*Expense form*/}
-      <Box mb={8}>
+      <VStack spacing={4} align="strech">
+        <Heading as="h1" size="2xl" mb={5}>
+          Expenses Tracker
+        </Heading>
+        {/*Expense form*/}
         <ExpenseForm
           onSubmit={(newExpense) =>
             setExpenses([
@@ -34,15 +38,13 @@ function App() {
             ])
           }
         />
-      </Box>
 
-      {/*expense filter and list*/}
-      <Box mb={3}>
+        {/*expense filter and list*/}
         <ExpenseFilter
           onSelectCategory={(category) => setSelectedCategory(category)}
         />
-      </Box>
-      <ExpenseList expenses={visibleExpenses} onDelete={handlerDelete} />
+        <ExpenseList expenses={visibleExpenses} onDelete={handlerDelete} />
+      </VStack>
     </>
   );
 }
