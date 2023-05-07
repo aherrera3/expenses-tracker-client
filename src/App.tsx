@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { Heading, VStack } from "@chakra-ui/react";
+import axios from "axios";
 import ExpenseList from "./components/ExpenseList";
-import ExpenseForm from "./components/ExpenseForm";
+import ExpenseForm, { ExpenseFormData } from "./components/ExpenseForm";
 import ExpenseFilter from "./components/ExpenseFilter";
-import { Box, Heading, VStack } from "@chakra-ui/react";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -11,6 +12,17 @@ function App() {
     { id: 2, description: "bbb", amount: 8, category: "Groceries" },
     { id: 3, description: "ccc", amount: 5, category: "Utilities" },
   ]);
+
+  const handlerSubmit = (newExpense: ExpenseFormData) => {
+    axios
+      .post("http://localhost:5174/api/insert", {
+        description: newExpense.description,
+        amount: newExpense.amount,
+        category: newExpense.category,
+      })
+      .then((response) => console.log(response));
+    // .catch((err) => setError(err.message));
+  };
 
   const handlerDelete = (id: number) => {
     setExpenses(expenses.filter((arr) => arr.id !== id));
@@ -29,13 +41,16 @@ function App() {
         <Heading as="h1" size="2xl" mb={5}>
           Expenses Tracker
         </Heading>
+
         {/*Expense form*/}
         <ExpenseForm
-          onSubmit={(newExpense) =>
-            setExpenses([
-              ...expenses,
-              { ...newExpense, id: expenses.length + 1 },
-            ])
+          onSubmit={
+            handlerSubmit
+            // (newExpense) =>
+            //   setExpenses([
+            //     ...expenses,
+            //     { ...newExpense, id: expenses.length + 1 },
+            //   ]) // the expenses array is updated with the new expense object
           }
         />
 

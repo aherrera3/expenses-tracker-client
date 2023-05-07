@@ -3,7 +3,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import categories from "../utils/categories";
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
@@ -27,7 +26,7 @@ const schema = z.object({
   // zod expects the array inside enum() to be a read only or constant array, so not just declaring categories as constant will do, cos u can modify the array with methods like push
 });
 
-type ExpenseFormData = z.infer<typeof schema>; // creating a typescript type z.infer
+export type ExpenseFormData = z.infer<typeof schema>; // creating a typescript type z.infer
 
 interface Props {
   onSubmit: (data: ExpenseFormData) => void;
@@ -45,7 +44,7 @@ const ExpenseForm = ({ onSubmit }: Props) => {
     <form
       onSubmit={handleSubmit((data) => {
         onSubmit(data);
-        reset();
+        reset(); //resets the form values
       })}
     >
       <FormControl mb={3}>
