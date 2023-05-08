@@ -8,6 +8,7 @@ import ExpenseFilter from "./components/ExpenseFilter";
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  // const [selectedExpense, setSelectedExpense] = useState<Expense>();
 
   useEffect(() => {
     axios.get("http://localhost:5174/api/get").then((response) => {
@@ -49,10 +50,14 @@ function App() {
     });
   };
 
-  // const handleUpdate = (id: number) => {
-  //   setExpenses(expenses.filter((arr) => arr.id !== id));
-  //   console.log("Deleting", id);
-  // };
+  const handleUpdate = (selectedExpense: Expense) => {
+    console.log("updating: ", selectedExpense);
+    // axios.put("http://localhost:5174/api/update", {
+    //   description: selectedExpense.description,
+    //   amount: selectedExpense.amount,
+    //   category: selectedExpense.category,
+    // });
+  };
 
   const visibleExpenses = selectedCategory
     ? expenses.filter((e) => e.category === selectedCategory)
@@ -82,7 +87,11 @@ function App() {
         <ExpenseFilter
           onSelectCategory={(category) => setSelectedCategory(category)}
         />
-        <ExpenseList expenses={visibleExpenses} onDelete={handleDelete} />
+        <ExpenseList
+          expenses={visibleExpenses}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
       </VStack>
     </>
   );

@@ -20,9 +20,10 @@ export interface Expense {
 interface Props {
   expenses: Expense[]; //expenses is an array of expense objects
   onDelete: (id: number) => void;
+  onUpdate: (expense: Expense) => void;
 }
 
-const ExpenseList = ({ expenses, onDelete }: Props) => {
+const ExpenseList = ({ expenses, onUpdate, onDelete }: Props) => {
   if (expenses.length === 0) return null;
   return (
     <Table>
@@ -32,6 +33,7 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
           <Th>Amount</Th>
           <Th>Category</Th>
           <Th></Th>
+          <Th></Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -40,6 +42,15 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
             <Td>{expense.description}</Td>
             <Td>$ {expense.amount.toFixed(2)}</Td>
             <Td>{expense.category}</Td>
+            <Td>
+              <Button
+                colorScheme="green"
+                variant="outline"
+                onClick={() => onUpdate(expense)}
+              >
+                Update
+              </Button>
+            </Td>
             <Td>
               <Button
                 colorScheme="red"
@@ -61,6 +72,7 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
               .reduce((acc, expense) => expense.amount + acc, 0)
               .toFixed(2)}
           </Td>
+          <Td></Td>
           <Td></Td>
           <Td></Td>
         </Tr>
