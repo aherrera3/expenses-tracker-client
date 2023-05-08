@@ -7,21 +7,16 @@ import ExpenseFilter from "./components/ExpenseFilter";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "aaa", amount: 10, category: "Utilities" },
-    { id: 2, description: "bbb", amount: 8, category: "Groceries" },
-    { id: 3, description: "ccc", amount: 5, category: "Utilities" },
-  ]);
-  const [expensesList, setExpensesList] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
 
   useEffect(() => {
     axios.get("http://localhost:5174/api/get").then((response) => {
       console.log(response.data);
-      setExpensesList(response.data);
+      setExpenses(response.data);
     });
   }, []);
 
-  const handlerSubmit = (newExpense: ExpenseFormData) => {
+  const handleSubmit = (newExpense: ExpenseFormData) => {
     setExpenses([...expenses, { ...newExpense, id: expenses.length + 1 }]); // the expenses array is updated with the new  object
 
     axios
@@ -32,20 +27,28 @@ function App() {
       })
       .then((response) => {
         //no se esta imprimiendo nada porque no obtengo ninguna response del backend.
-        console.log("mpld");
+        console.log("log?");
         console.log(response);
       })
       .catch((err) => console.log(err));
   };
 
-  const handlerDelete = (id: number) => {
-    setExpenses(expenses.filter((arr) => arr.id !== id));
+  const handleDelete = (id: number) => {
     console.log("Deleting", id);
+    setExpenses(expenses.filter((arr) => arr.id !== id));
+    axios.delete(`http://localhost:5174/api/delete/${id}`).then(() => {
+      console.log("data has been deleted");
+    });
   };
 
+  // const handleUpdate = (id: number) => {
+  //   setExpenses(expenses.filter((arr) => arr.id !== id));
+  //   console.log("Deleting", id);
+  // };
+
   const visibleExpenses = selectedCategory
-    ? expensesList.filter((e) => e.category === selectedCategory)
-    : expensesList;
+    ? expenses.filter((e) => e.category === selectedCategory)
+    : expenses;
 
   return (
     //stretch
@@ -59,7 +62,7 @@ function App() {
         </Heading>
 
         {/*Expense form*/}
-        <ExpenseForm onSubmit={handlerSubmit} />
+        <ExpenseForm onSubmit={handleSubmit} />
 
         {/*expense filter and list*/}
         <HStack display="flex" justifyContent="space-between" mb={5}>
@@ -71,7 +74,7 @@ function App() {
         <ExpenseFilter
           onSelectCategory={(category) => setSelectedCategory(category)}
         />
-        <ExpenseList expenses={visibleExpenses} onDelete={handlerDelete} />
+        <ExpenseList expenses={visibleExpenses} onDelete={handleDelete} />
       </VStack>
     </>
   );
