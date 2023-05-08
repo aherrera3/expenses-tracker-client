@@ -11,14 +11,12 @@ function App() {
 
   useEffect(() => {
     axios.get("http://localhost:5174/api/get").then((response) => {
-      console.log(response.data);
+      console.log("response data", response.data);
       setExpenses(response.data);
     });
   }, []);
 
   const handleSubmit = (newExpense: ExpenseFormData) => {
-    setExpenses([...expenses, { ...newExpense, id: expenses.length + 1 }]); // the expenses array is updated with the new  object
-
     axios
       .post("http://localhost:5174/api/insert", {
         description: newExpense.description,
@@ -31,6 +29,16 @@ function App() {
         console.log(response);
       })
       .catch((err) => console.log(err));
+
+    // getting the newExpense id from the backend
+    let newExpenseId = 0;
+    axios.get("http://localhost:5174/api/get").then((response) => {
+      newExpenseId = response.data[response.data.length - 1].id;
+      console.log("new expense id: ", newExpenseId);
+    });
+
+    // the expenses array is updated with the new  object
+    setExpenses([...expenses, { ...newExpense, id: newExpenseId }]);
   };
 
   const handleDelete = (id: number) => {
