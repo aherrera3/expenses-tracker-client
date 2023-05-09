@@ -4,11 +4,13 @@ import axios from "axios";
 import ExpenseList, { Expense } from "./components/ExpenseList";
 import ExpenseForm, { ExpenseFormData } from "./components/ExpenseForm";
 import ExpenseFilter from "./components/ExpenseFilter";
+import EditExpenseOverlay from "./components/EditExpenseOverlay/EditExpenseOverlay";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  // const [selectedExpense, setSelectedExpense] = useState<Expense>();
+  const [expenseLayoutOpen, setExpenseLayoutOpen] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState<Expense>();
 
   useEffect(() => {
     axios.get("http://localhost:5174/api/get").then((response) => {
@@ -42,21 +44,40 @@ function App() {
     setExpenses([...expenses, { ...newExpense, id: newExpenseId }]);
   };
 
-  const handleDelete = (id: number) => {
-    console.log("Deleting", id);
-    setExpenses(expenses.filter((arr) => arr.id !== id));
-    axios.delete(`http://localhost:5174/api/delete/${id}`).then(() => {
-      console.log("data has been deleted");
-    });
+  const handleDelete = (actualExpense: Expense) => {
+    console.log("Deleting", actualExpense.id);
+    setExpenses(expenses.filter((arr) => arr.id !== actualExpense.id));
+    axios
+      .delete(`http://localhost:5174/api/delete/${actualExpense.id}`)
+      .then(() => {
+        console.log("data has been deleted");
+      });
   };
 
-  const handleUpdate = (selectedExpense: Expense) => {
+  const handleUpdate = (newExpense: ExpenseFormData) => {
+    // setExpenseLayoutOpen(!expenseLayoutOpen); //open the overlay
     console.log("updating: ", selectedExpense);
-    // axios.put("http://localhost:5174/api/update", {
-    //   description: selectedExpense.description,
-    //   amount: selectedExpense.amount,
-    //   category: selectedExpense.category,
-    // });
+    // setExpenses([...expenses, { ...selectedExpense, id: selectedExpense?.id }])
+    axios.put(`http://localhost:5174/api/update/${selectedExpense?.id}`, {
+      description: newExpense?.description,
+      amount: newExpense?.amount,
+      category: newExpense?.category,
+    });
+
+    if (selectedExpense)
+      setExpenses([
+        ...expenses.filter((arr) => arr.id !== selectedExpense.id, {
+          ...newExpense,
+          id: selectedExpense.id,
+        }),
+      ]);
+    console.log(newExpense?.description);
+  };
+
+  const toogleExpenseOverlay = (actualExpense: Expense) => {
+    setSelectedExpense(actualExpense);
+    // console.log(actualExpense);
+    setExpenseLayoutOpen(!expenseLayoutOpen);
   };
 
   const visibleExpenses = selectedCategory
@@ -89,10 +110,15 @@ function App() {
         />
         <ExpenseList
           expenses={visibleExpenses}
-          onUpdate={handleUpdate}
+          onEdit={toogleExpenseOverlay}
           onDelete={handleDelete}
         />
       </VStack>
+      <EditExpenseOverlay
+        isOpen={expenseLayoutOpen}
+        onClose={toogleExpenseOverlay}
+        onEdit={handleUpdate}
+      />
     </>
   );
 }

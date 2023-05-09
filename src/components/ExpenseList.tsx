@@ -19,11 +19,11 @@ export interface Expense {
 
 interface Props {
   expenses: Expense[]; //expenses is an array of expense objects
-  onDelete: (id: number) => void;
-  onUpdate: (expense: Expense) => void;
+  onDelete: (expense: Expense) => void; //(id: number) => void;
+  onEdit: (expense: Expense) => void;
 }
 
-const ExpenseList = ({ expenses, onUpdate, onDelete }: Props) => {
+const ExpenseList = ({ expenses, onEdit, onDelete }: Props) => {
   if (expenses.length === 0) return null;
   return (
     <Table>
@@ -44,18 +44,20 @@ const ExpenseList = ({ expenses, onUpdate, onDelete }: Props) => {
             <Td>{expense.category}</Td>
             <Td>
               <Button
-                colorScheme="green"
+                colorScheme="yellow"
                 variant="outline"
-                onClick={() => onUpdate(expense)}
+                onClick={() => {
+                  onEdit(expense);
+                }}
               >
-                Update
+                Edit
               </Button>
             </Td>
             <Td>
               <Button
                 colorScheme="red"
                 variant="outline"
-                onClick={() => onDelete(expense.id)}
+                onClick={() => onDelete(expense)}
               >
                 Delete
               </Button>
