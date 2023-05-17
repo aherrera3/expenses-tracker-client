@@ -5,6 +5,7 @@ import ExpenseList, { Expense } from "./components/ExpenseList";
 import ExpenseForm, { ExpenseFormData } from "./components/ExpenseForm";
 import ExpenseFilter from "./components/ExpenseFilter";
 import EditExpenseOverlay from "./components/EditExpenseOverlay/EditExpenseOverlay";
+import ColorModeSwitch from "./components/ColorModeSwitch";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -88,9 +89,12 @@ function App() {
     //stretch
     <>
       <VStack spacing={6} align="strech">
-        <Heading as="h1" size="2xl" mb={4}>
-          Expenses Tracker
-        </Heading>
+        <HStack display="flex" justifyContent="space-between">
+          <Heading as="h1" size="2xl" mb={4}>
+            Expenses Tracker
+          </Heading>
+          <ColorModeSwitch />
+        </HStack>
         <Heading as="h1" size="lg" mb={5}>
           Add you new expense
         </Heading>

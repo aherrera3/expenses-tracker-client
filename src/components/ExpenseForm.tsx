@@ -12,6 +12,8 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
+import { AiOutlineArrowRight } from "react-icons/ai";
+import "./ExpenseForm.css";
 
 // validation rules (schema)
 const schema = z.object({
@@ -94,7 +96,14 @@ const ExpenseForm = ({ onSubmit }: Props) => {
         )}
       </FormControl>
 
-      <Button colorScheme="teal" variant="outline" type="submit">
+      <Button
+        className="btn"
+        rightIcon={<AiOutlineArrowRight />}
+        colorScheme="teal"
+        size="lg"
+        variant="solid" //outline
+        type="submit"
+      >
         Submit
       </Button>
     </form>

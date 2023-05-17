@@ -1,5 +1,5 @@
 .overlay__background {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(1, 4, 31, 0.8);
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -10,7 +10,9 @@
 }
 
 .overlay__container {
-  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(1, 4, 31, 1);
   position: fixed;
   top: 0;
   right: 0;
@@ -21,6 +23,7 @@
   padding: 30px;
   width: fit-content;
   height: fit-content;
+  border-radius: 15px;
 }
 
 .overlay__controls {
@@ -29,14 +32,8 @@
   align-items: center;
 }
 
-.overlay__close:after {
-  display: inline-block;
-  content: "Cancel";
-}
-
-.overlay__close {
-  border: none;
-  /* background-color: transparent; */
-  font-size: 36px;
-  cursor: pointer;
+.cancel-btn {
+  flex: 1;
+  padding-top: 1.3vh;
+  padding-bottom: 1.3vh;
 }

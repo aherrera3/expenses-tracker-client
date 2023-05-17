@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
+import { AiOutlineClose } from "react-icons/ai";
 import ExpenseForm, { ExpenseFormData } from "../ExpenseForm";
 import "./EditExpenseOverlay.css";
 
@@ -18,10 +19,14 @@ function EditExpenseOverlay({ isOpen, onClose, onEdit }: Props) {
           <ExpenseForm onSubmit={onEdit} />
           <Button
             mt={3}
+            className="cancel-btn"
+            rightIcon={<AiOutlineClose />}
             colorScheme="red"
-            className="overlay__close"
+            size="lg"
             onClick={onClose}
-          />
+          >
+            Cancel
+          </Button>
         </Box>
       </Box>
     </>
