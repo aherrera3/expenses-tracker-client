@@ -78,6 +78,7 @@ function App() {
   const toogleExpenseOverlay = (actualExpense: Expense) => {
     setSelectedExpense(actualExpense);
     // console.log(actualExpense);
+    console.log("selected expense: ", selectedExpense);
     setExpenseLayoutOpen(!expenseLayoutOpen);
   };
 
@@ -100,7 +101,7 @@ function App() {
         </Heading>
 
         {/*Expense form*/}
-        <ExpenseForm onSubmit={handleSubmit} />
+        <ExpenseForm editing={false} onSubmit={handleSubmit} />
 
         {/*expense filter and list*/}
         <HStack display="flex" justifyContent="space-between" mb={5}>
@@ -119,6 +120,7 @@ function App() {
         />
       </VStack>
       <EditExpenseOverlay
+        expense={selectedExpense}
         isOpen={expenseLayoutOpen}
         onClose={toogleExpenseOverlay}
         onEdit={handleUpdate}

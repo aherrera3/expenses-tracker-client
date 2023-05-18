@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import "./ExpenseForm.css";
+import { Expense } from "./ExpenseList";
 
 // validation rules (schema)
 const schema = z.object({
@@ -31,10 +32,12 @@ const schema = z.object({
 export type ExpenseFormData = z.infer<typeof schema>; // creating a typescript type z.infer
 
 interface Props {
+  editing: boolean;
+  expense?: Expense;
   onSubmit: (data: ExpenseFormData) => void;
 }
 
-const ExpenseForm = ({ onSubmit }: Props) => {
+const ExpenseForm = ({ editing, onSubmit, expense }: Props) => {
   const {
     register,
     handleSubmit,
@@ -52,6 +55,7 @@ const ExpenseForm = ({ onSubmit }: Props) => {
       <FormControl mb={3}>
         <FormLabel htmlFor="description">Description</FormLabel>
         <Input
+          value={editing ? expense?.description : ""}
           placeholder="Food for the cats"
           {...register("description")}
           id="description"
@@ -72,6 +76,7 @@ const ExpenseForm = ({ onSubmit }: Props) => {
             children="$"
           />
           <Input
+            value={editing ? expense?.amount : ""}
             placeholder="120000"
             {...register("amount", { valueAsNumber: true })}
             id="amount"
@@ -83,7 +88,12 @@ const ExpenseForm = ({ onSubmit }: Props) => {
 
       <FormControl mb={5}>
         <FormLabel htmlFor="category">Category</FormLabel>
-        <Select {...register("category")} id="category" name="category">
+        <Select
+          {...register("category")}
+          value={editing ? expense?.category : ""}
+          id="category"
+          name="category"
+        >
           <option value=""></option>
           {categories.map((category) => (
             <option key={category} value={category}>
