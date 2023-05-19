@@ -15,6 +15,7 @@ export interface Expense {
   description: string;
   amount: number;
   category: string;
+  month: string;
 }
 
 interface Props {
@@ -32,6 +33,7 @@ const ExpenseList = ({ expenses, onEdit, onDelete }: Props) => {
           <Th>Description</Th>
           <Th>Amount</Th>
           <Th>Category</Th>
+          <Th>Month</Th>
           <Th></Th>
           <Th></Th>
         </Tr>
@@ -42,6 +44,7 @@ const ExpenseList = ({ expenses, onEdit, onDelete }: Props) => {
             <Td>{expense.description}</Td>
             <Td>$ {expense.amount.toFixed(2)}</Td>
             <Td>{expense.category}</Td>
+            <Td>{expense.month}</Td>
             <Td>
               <Button
                 colorScheme="yellow"

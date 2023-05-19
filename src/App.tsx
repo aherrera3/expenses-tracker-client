@@ -6,9 +6,11 @@ import ExpenseForm, { ExpenseFormData } from "./components/ExpenseForm";
 import ExpenseFilter from "./components/ExpenseFilter";
 import EditExpenseOverlay from "./components/EditExpenseOverlay/EditExpenseOverlay";
 import ColorModeSwitch from "./components/ColorModeSwitch";
+import ExpenseMonthFilter from "./components/ExpenseMonthFilter";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [expenseLayoutOpen, setExpenseLayoutOpen] = useState(false);
@@ -27,6 +29,7 @@ function App() {
         description: newExpense.description,
         amount: newExpense.amount,
         category: newExpense.category,
+        month: newExpense.month,
       })
       .then((response) => {
         //no se esta imprimiendo nada porque no obtengo ninguna response del backend.
@@ -102,7 +105,9 @@ function App() {
           <Heading as="h1" size="lg">
             Expenses from:
           </Heading>
-          <Heading size="md">May</Heading>
+          <ExpenseMonthFilter
+            onSelectMonth={(month) => setSelectedMonth(month)}
+          />
         </HStack>
         <ExpenseFilter
           onSelectCategory={(category) => setSelectedCategory(category)}

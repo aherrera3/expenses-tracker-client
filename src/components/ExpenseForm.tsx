@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import categories from "../utils/categories";
+import months from "../utils/months";
 import {
   Button,
   FormControl,
@@ -15,6 +16,7 @@ import {
 import { AiOutlineArrowRight } from "react-icons/ai";
 import "./ExpenseForm.css";
 import { Expense } from "./ExpenseList";
+import { useState } from "react";
 
 // validation rules (schema)
 const schema = z.object({
@@ -26,6 +28,9 @@ const schema = z.object({
   category: z.enum(categories, {
     errorMap: () => ({ message: "Category is required." }),
   }), //an enum can be one of many values
+  month: z.enum(months, {
+    errorMap: () => ({ message: "Month is required." }),
+  }),
   // zod expects the array inside enum() to be a read only or constant array, so not just declaring categories as constant will do, cos u can modify the array with methods like push
 });
 
@@ -45,6 +50,9 @@ const ExpenseForm = ({ editing, onSubmit, expense }: Props) => {
     formState: { errors },
   } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
+  // const [description, setDescription] = useState(expense?.description);
+  // const handleChange = (event: any) => setDescription(event.target.value);
+
   return (
     <form
       onSubmit={handleSubmit((data) => {
@@ -55,7 +63,8 @@ const ExpenseForm = ({ editing, onSubmit, expense }: Props) => {
       <FormControl mb={3}>
         <FormLabel htmlFor="description">Description</FormLabel>
         <Input
-          value={editing ? expense?.description : ""}
+          // value={editing ? expense?.description : undefined}
+          // onChange={handleChange}
           placeholder="Food for the cats"
           {...register("description")}
           id="description"
@@ -76,7 +85,7 @@ const ExpenseForm = ({ editing, onSubmit, expense }: Props) => {
             children="$"
           />
           <Input
-            value={editing ? expense?.amount : ""}
+            // value={editing ? expense?.amount : undefined}
             placeholder="120000"
             {...register("amount", { valueAsNumber: true })}
             id="amount"
@@ -86,11 +95,11 @@ const ExpenseForm = ({ editing, onSubmit, expense }: Props) => {
         {errors.amount && <Text color="red.300">{errors.amount.message}</Text>}
       </FormControl>
 
-      <FormControl mb={5}>
+      <FormControl mb={3}>
         <FormLabel htmlFor="category">Category</FormLabel>
         <Select
           {...register("category")}
-          value={editing ? expense?.category : ""}
+          // value={editing ? expense?.category : undefined}
           id="category"
           name="category"
         >
@@ -104,6 +113,24 @@ const ExpenseForm = ({ editing, onSubmit, expense }: Props) => {
         {errors.category && (
           <Text color="red.300">{errors.category.message}</Text>
         )}
+      </FormControl>
+
+      <FormControl mb={5}>
+        <FormLabel htmlFor="month">Month</FormLabel>
+        <Select
+          {...register("month")}
+          // value={editing ? expense?.month : undefined}
+          id="month"
+          name="month"
+        >
+          <option value=""></option>
+          {months.map((month) => (
+            <option key={month} value={month}>
+              {month}
+            </option>
+          ))}
+        </Select>
+        {errors.month && <Text color="red.300">{errors.month.message}</Text>}
       </FormControl>
 
       <Button
