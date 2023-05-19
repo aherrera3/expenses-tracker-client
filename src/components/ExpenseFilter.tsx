@@ -10,6 +10,7 @@ interface Props {
 const ExpenseFilter = ({ onSelectCategory }: Props) => {
   return (
     <Select
+      variant="filled"
       placeholder="All categories"
       onChange={(event) => onSelectCategory(event.target.value)}
     >

@@ -10,6 +10,8 @@ interface Props {
 const ExpenseFilter = ({ onSelectMonth }: Props) => {
   return (
     <Select
+      variant="filled"
+      width="200px"
       placeholder="All months"
       onChange={(event) => onSelectMonth(event.target.value)}
     >

@@ -79,9 +79,13 @@ function App() {
     setExpenseLayoutOpen(!expenseLayoutOpen);
   };
 
-  const visibleExpenses = selectedCategory
-    ? expenses.filter((e) => e.category === selectedCategory)
+  const expensesFilteredByMonth = selectedMonth
+    ? expenses.filter((e) => e.month === selectedMonth)
     : expenses;
+
+  const visibleExpenses = selectedCategory
+    ? expensesFilteredByMonth.filter((e) => e.category === selectedCategory)
+    : expensesFilteredByMonth;
 
   return (
     //stretch
