@@ -10,6 +10,7 @@ import ColorModeSwitch from "./components/ColorModeSwitch";
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [submitting, setSubmitting] = useState(false);
   const [expenseLayoutOpen, setExpenseLayoutOpen] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState<Expense>();
 
@@ -18,7 +19,7 @@ function App() {
       console.log("response data", response.data);
       setExpenses(response.data);
     });
-  }, []);
+  }, [submitting]);
 
   const handleSubmit = (newExpense: ExpenseFormData) => {
     axios
@@ -34,15 +35,7 @@ function App() {
       })
       .catch((err) => console.log(err));
 
-    // getting the newExpense id from the backend
-    let newExpenseId = 0;
-    axios.get("http://localhost:5174/api/get").then((response) => {
-      newExpenseId = response.data[response.data.length - 1].id;
-      console.log("new expense id: ", newExpenseId);
-    });
-
-    // the expenses array is updated with the new  object
-    setExpenses([...expenses, { ...newExpense, id: newExpenseId }]);
+    setSubmitting(!submitting);
   };
 
   const handleDelete = (actualExpense: Expense) => {
@@ -55,24 +48,25 @@ function App() {
       });
   };
 
-  const handleUpdate = (newExpense: ExpenseFormData) => {
+  const handleUpdate = (actualExpense: ExpenseFormData) => {
     // setExpenseLayoutOpen(!expenseLayoutOpen); //open the overlay
     console.log("updating: ", selectedExpense);
+    console.log("actualExpense: ", actualExpense);
     // setExpenses([...expenses, { ...selectedExpense, id: selectedExpense?.id }])
-    axios.put(`http://localhost:5174/api/update/${selectedExpense?.id}`, {
-      description: newExpense?.description,
-      amount: newExpense?.amount,
-      category: newExpense?.category,
-    });
+    // axios.put(`http://localhost:5174/api/update/${selectedExpense?.id}`, {
+    //   description: newExpense?.description,
+    //   amount: newExpense?.amount,
+    //   category: newExpense?.category,
+    // });
 
-    if (selectedExpense)
-      setExpenses([
-        ...expenses.filter((arr) => arr.id !== selectedExpense.id, {
-          ...newExpense,
-          id: selectedExpense.id,
-        }),
-      ]);
-    console.log(newExpense?.description);
+    // if (selectedExpense)
+    //   setExpenses([
+    //     ...expenses.filter((arr) => arr.id !== selectedExpense.id, {
+    //       ...newExpense,
+    //       id: selectedExpense.id,
+    //     }),
+    //   ]);
+    // console.log(newExpense?.description);
   };
 
   const toogleExpenseOverlay = (actualExpense: Expense) => {
