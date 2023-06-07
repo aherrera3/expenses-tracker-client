@@ -42,7 +42,7 @@ const ExpenseList = ({ expenses, onEdit, onDelete }: Props) => {
         {expenses.map((expense) => (
           <Tr key={expense.id}>
             <Td>{expense.description}</Td>
-            <Td>$ {expense.amount.toFixed(2)}</Td>
+            <Td>$ {expense.amount}</Td>
             <Td>{expense.category}</Td>
             <Td>{expense.month}</Td>
             <Td>
@@ -72,10 +72,7 @@ const ExpenseList = ({ expenses, onEdit, onDelete }: Props) => {
         <Tr>
           <Td>Total</Td>
           <Td>
-            ${" "}
-            {expenses
-              .reduce((acc, expense) => expense.amount + acc, 0)
-              .toFixed(2)}
+            $ {expenses.reduce((acc, expense) => expense.amount + acc, 0)}
           </Td>
           <Td></Td>
           <Td></Td>

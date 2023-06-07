@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HStack, Heading, VStack } from "@chakra-ui/react";
+import { Box, HStack, Heading, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import ExpenseList, { Expense } from "./components/ExpenseList";
 import ExpenseForm, { ExpenseFormData } from "./components/ExpenseForm";
